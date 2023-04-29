@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_violet"
+    tools:context=".ui.create_dao.CreateDaoActivity">
+
+    <EditText
+        android:id="@+id/token_name"
+        style="@style/FieldStyle"
+        android:hint="НАЗВАНИЕ ТОКЕНА"
+        android:layout_marginTop="76dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/total_supply"
+        style="@style/FieldStyle"
+        android:layout_marginTop="16dp"
+        android:hint="КОЛИЧЕСТВО ТОКЕНА"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/token_name" />
+
+    <EditText
+        android:id="@+id/voting_period"
+        style="@style/FieldStyle"
+        android:layout_marginTop="16dp"
+        android:hint="ПЕРИОД ГОЛОСОВАНИЯ"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/total_supply" />
+
+    <EditText
+        android:id="@+id/quorum"
+        style="@style/FieldStyle"
+        android:layout_marginTop="16dp"
+        android:hint="ПРОЦЕНТ КВОРУМА"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/voting_period" />
+
+    <EditText
+        android:id="@+id/timelock_delay"
+        style="@style/FieldStyle"
+        android:layout_marginTop="16dp"
+        android:hint="ПЕРИОД БЛОКИРОВАНИЯ"
+        android:textColorHint="#A1A1A1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quorum" />
+
+    <Button
+        android:id="@+id/dao_create_dao_btn"
+        style="@style/RoundedBtnStyle"
+        android:text="СОЗДАТЬ ДАО"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView11"
+        style="@style/TitleStyle"
+        android:text="НАСТРОЙКА ДАО"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_violet"
+    tools:context=".ui.admin.DaoSettingsActivity">
+
+    <EditText
+        android:id="@+id/transfer_dst_address3"
+        style="@style/FieldStyle"
+        android:layout_marginTop="20dp"
+        android:hint="ПОЛУЧАТЕЛЬ"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_totalSupply" />
+
+    <EditText
+        android:id="@+id/transfer_dst_address2"
+        style="@style/FieldStyle"
+        android:layout_marginTop="20dp"
+        android:hint="КОЛИЧЕСТВО"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/transfer_dst_address3" />
+
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/TitleStyle"
+        android:text="УПРАВЛЕНИЕ ДАО"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textView10"
+        style="@style/SubtitleStyle"
+        android:layout_marginTop="228dp"
+        android:text="РАСПРЕДЕЛИТЬ ТОКЕНЫ УПРАВЛЕНИЯ"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView3"
+        style="@style/SubtitleStyle"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="56dp"
+        android:text="ДОБАВИТЬ АУДИТОРА"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/settings_totalSupply"
+        style="@style/SubtitleStyle"
+        android:layout_marginTop="20dp"
+        android:text="ВСЕГО 10000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <EditText
+        android:id="@+id/transfer_dst_address"
+        style="@style/FieldStyle"
+        android:layout_marginTop="16dp"
+        android:hint="ЛОГИН"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="350dp"
+        style="@style/RoundedBtnStyle"
+        android:text="ПРИМЕНИТЬ"
+        android:textColor="@color/dark_violet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
