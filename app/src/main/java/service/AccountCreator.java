@@ -157,6 +157,7 @@ public class AccountCreator {
         SharedPreferences sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("private_key", ecKeyPair.getPrivateKey().toString());
+        editor.putString("public_key", ecKeyPair.getPublicKey().toString());
         editor.apply();
     }
 

@@ -1,4 +1,4 @@
-package com.example.qdao.ui.my_proposals;
+package com.example.qdao.ui.proposals_for_voting;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,17 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qdao.R;
+import com.example.qdao.ui.my_proposals.ProposalItemsAdapter;
 
 import java.util.List;
 
 import model.ProposalThin;
 
-public class ProposalItemsAdapter extends RecyclerView.Adapter<ProposalItemsAdapter.ProposalItemViewHolder> {
-
-    private OnProposalListener listener;
+public class ProposalsForVotingAdapter extends RecyclerView.Adapter<ProposalsForVotingAdapter.ProposalItemViewHolder>  {
+    private final ProposalsForVotingAdapter.OnProposalListener listener;
     private List<ProposalThin> proposals;
 
-    public ProposalItemsAdapter(List<ProposalThin> proposals, OnProposalListener listener) {
+    public ProposalsForVotingAdapter(List<ProposalThin> proposals, ProposalsForVotingAdapter.OnProposalListener listener){
         this.listener = listener;
         this.proposals = proposals;
     }
@@ -31,7 +31,8 @@ public class ProposalItemsAdapter extends RecyclerView.Adapter<ProposalItemsAdap
 
     @NonNull
     @Override
-    public ProposalItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProposalsForVotingAdapter.ProposalItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(
                         R.layout.proposal_item_layout,
@@ -42,17 +43,9 @@ public class ProposalItemsAdapter extends RecyclerView.Adapter<ProposalItemsAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProposalItemViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull ProposalsForVotingAdapter.ProposalItemViewHolder holder, int i) {
         holder.nameTV.setText(proposals.get(i).getName());
-        holder.stateTV.setText(getStatusName(proposals.get(i).getState()));
-    }
-
-    private String getStatusName(short state) {
-
-        switch (state) {
-            case 0: return "Активно";
-            default: return "Неизвестно";
-        }
+        holder.stateTV.setText(String.valueOf(proposals.get(i).getState()));
     }
 
     @Override
@@ -66,14 +59,13 @@ public class ProposalItemsAdapter extends RecyclerView.Adapter<ProposalItemsAdap
     public static class ProposalItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView stateTV;
         TextView nameTV;
-        OnProposalListener listener;
+        ProposalsForVotingAdapter.OnProposalListener listener;
 
-        public ProposalItemViewHolder(@NonNull View itemView, OnProposalListener listener) {
+        public ProposalItemViewHolder(@NonNull View itemView,  ProposalsForVotingAdapter.OnProposalListener listener) {
             super(itemView);
 
             stateTV = itemView.findViewById(R.id.state_tv);
             nameTV = itemView.findViewById(R.id.proposal_name_tv);
-
             this.listener = listener;
 
             itemView.setOnClickListener(this);

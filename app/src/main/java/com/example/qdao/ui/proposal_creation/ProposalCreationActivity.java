@@ -4,20 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.Spinner;
 
 import com.example.qdao.R;
-import com.example.qdao.ui.SignFragment;
+import com.example.qdao.ui.ToastHelper;
 
 import model.RawTransaction;
+import service.Result;
+import service.TransactionSender;
+import service.TransactionSigner;
 import view_model.ProposalCreationViewModel;
 
 public class ProposalCreationActivity extends AppCompatActivity {
@@ -26,7 +26,7 @@ public class ProposalCreationActivity extends AppCompatActivity {
     private EditText nameET;
     private EditText descriptionET;
     private EditText newValueET;
-    private FrameLayout signFragment;
+    private Spinner proposalActionSpinner;
     private ProposalCreationViewModel viewModel;
 
     @Override
@@ -34,7 +34,7 @@ public class ProposalCreationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proposal_creation);
 
-        Spinner proposalActionSpinner = findViewById(R.id.action_spinner);
+        proposalActionSpinner = findViewById(R.id.proposals_type_spinner);
         String[] options = {"Изменить период голосования", "Изменить кворум"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options);
@@ -45,8 +45,6 @@ public class ProposalCreationActivity extends AppCompatActivity {
         nameET = findViewById(R.id.nameET);
         descriptionET = findViewById(R.id.descriptionET);
         newValueET = findViewById(R.id.new_value_ET);
-        signFragment = findViewById(R.id.fragment_sign);
-        signFragment.setVisibility(View.INVISIBLE);
 
         createProposalBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,24 +55,28 @@ public class ProposalCreationActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(ProposalCreationViewModel.class);
 
-        //ShowSignTransactionFragment(new RawTransaction(1, 2, 3,"", "", 1));
-
-        viewModel.getRawTransaction().observe(this, new Observer<RawTransaction>() {
+        viewModel.getProposalTransactionResult().observe(this, new Observer<Result<Void>>() {
             @Override
-            public void onChanged(RawTransaction rawTransaction) {
-                if (rawTransaction != null){
-                    //ShowSignTransactionFragment(rawTransaction);
+            public void onChanged(Result<Void> result) {
+                if (result.isSuccess()){
+                    ToastHelper.make(ProposalCreationActivity.this, "Предложение успешно создано");
+                } else {
+                    ToastHelper.make(ProposalCreationActivity.this, result.getErrorMessage());
                 }
             }
         });
-    }
 
-    private void ShowSignTransactionFragment(RawTransaction rawTransaction){
-        signFragment.setVisibility(View.VISIBLE);
-        getSupportFragmentManager().beginTransaction()
-              .setReorderingAllowed(true)
-              .add(R.id.fragment_sign, SignFragment.class, null)
-              .commit();
+        viewModel.getProposalTransaction().observe(this, new Observer<Result<RawTransaction>>() {
+            @Override
+            public void onChanged(Result<RawTransaction> rawTransactionResult) {
+                if (rawTransactionResult.isSuccess()){
+                    viewModel.signAndSendCreateProposalTransaction(rawTransactionResult.getData());
+                }
+                else {
+                    ToastHelper.make(ProposalCreationActivity.this, rawTransactionResult.getErrorMessage());
+                }
+            }
+        });
     }
 
     private void OnCreateProposalBtnClick(){
@@ -82,6 +84,7 @@ public class ProposalCreationActivity extends AppCompatActivity {
         viewModel.createProposal(
                 nameET.getText().toString(),
                 descriptionET.getText().toString(),
+                proposalActionSpinner.getSelectedItem().toString(),
                 newValueET.getText().toString());;
     }
 }

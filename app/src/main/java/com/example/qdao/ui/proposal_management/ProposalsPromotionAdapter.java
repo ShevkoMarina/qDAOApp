@@ -1,4 +1,4 @@
-package com.example.qdao.ui.my_proposals;
+package com.example.qdao.ui.proposal_management;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +14,11 @@ import java.util.List;
 
 import model.ProposalThin;
 
-public class ProposalItemsAdapter extends RecyclerView.Adapter<ProposalItemsAdapter.ProposalItemViewHolder> {
-
-    private OnProposalListener listener;
+public class ProposalsPromotionAdapter extends RecyclerView.Adapter<ProposalsPromotionAdapter.ProposalItemViewHolder>{
+    private ProposalsPromotionAdapter.OnProposalListener listener;
     private List<ProposalThin> proposals;
 
-    public ProposalItemsAdapter(List<ProposalThin> proposals, OnProposalListener listener) {
+    public ProposalsPromotionAdapter(List<ProposalThin> proposals, ProposalsPromotionAdapter.OnProposalListener listener) {
         this.listener = listener;
         this.proposals = proposals;
     }
@@ -38,7 +37,7 @@ public class ProposalItemsAdapter extends RecyclerView.Adapter<ProposalItemsAdap
                         parent,
                         false
                 );
-        return new ProposalItemViewHolder(view, listener);
+        return new ProposalsPromotionAdapter.ProposalItemViewHolder(view, listener);
     }
 
     @Override
@@ -47,6 +46,7 @@ public class ProposalItemsAdapter extends RecyclerView.Adapter<ProposalItemsAdap
         holder.stateTV.setText(getStatusName(proposals.get(i).getState()));
     }
 
+    // Перенести в модель
     private String getStatusName(short state) {
 
         switch (state) {
@@ -66,9 +66,9 @@ public class ProposalItemsAdapter extends RecyclerView.Adapter<ProposalItemsAdap
     public static class ProposalItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView stateTV;
         TextView nameTV;
-        OnProposalListener listener;
+        ProposalsPromotionAdapter.OnProposalListener listener;
 
-        public ProposalItemViewHolder(@NonNull View itemView, OnProposalListener listener) {
+        public ProposalItemViewHolder(@NonNull View itemView, ProposalsPromotionAdapter.OnProposalListener listener) {
             super(itemView);
 
             stateTV = itemView.findViewById(R.id.state_tv);
@@ -78,6 +78,7 @@ public class ProposalItemsAdapter extends RecyclerView.Adapter<ProposalItemsAdap
 
             itemView.setOnClickListener(this);
         }
+
 
         @Override
         public void onClick(View v) {

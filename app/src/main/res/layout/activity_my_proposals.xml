@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/dark_violet">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/proposalsRecyclerView"
         android:layout_width="350dp"
@@ -14,16 +15,15 @@
         android:foregroundGravity="center_horizontal"
         app:layout_constraintBottom_toTopOf="@+id/createProposalButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.0" />
-
+        app:layout_constraintVertical_bias="0.879" />
 
     <Button
         android:id="@+id/createProposalButton"
         style="@style/RoundedBtnStyle"
         android:text="СОЗДАТЬ ПРЕДЛОЖЕНИЕ"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -32,9 +32,53 @@
     <TextView
         android:id="@+id/textView4"
         style="@style/TitleStyle"
-        android:text="ГОЛОСОВАНИЕ"
+        android:text="МОИ ПРЕДЛОЖЕНИЯ"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/navigation_btn"
+        android:layout_width="14dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="44dp"
+        android:background="#00000000"
+        android:scaleType="centerInside"
+        android:src="@drawable/arrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/navigation_layout"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/navigation_btn">
+
+        <Button
+            android:id="@+id/to_voting_btn"
+            android:textSize="10sp"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#00000000"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="sans-serif-light"
+            android:text="ГОЛОСОВАНИЕ" />
+
+        <Button
+            android:id="@+id/to_balance_btn"
+            android:textSize="10sp"
+            android:background="#00000000"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="sans-serif-light"
+            android:text="БАЛАНС" />
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

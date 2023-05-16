@@ -1,5 +1,6 @@
 package com.example.qdao.ui.my_proposals;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,21 +10,28 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+
 import com.example.qdao.R;
+import com.example.qdao.ui.admin.DaoSettingsActivity;
+import com.example.qdao.ui.proposal_creation.ProposalCreationActivity;
+import com.example.qdao.ui.proposal_details.ProposalDetailsActivity;
+import com.example.qdao.ui.proposals_for_voting.ProposalsForVotingActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import model.ProposalListDto;
 
 import model.ProposalThin;
 import view_model.MyProposalsViewModel;
 
 public class MyProposalsActivity extends AppCompatActivity implements ProposalItemsAdapter.OnProposalListener{
-
     private ProposalItemsAdapter adapter;
-    private List<ProposalListDto> proposalList = new ArrayList<>();
+    private List<ProposalThin> proposalList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,47 +42,51 @@ public class MyProposalsActivity extends AppCompatActivity implements ProposalIt
 
         RecyclerView recyclerView = findViewById(R.id.proposalsRecyclerView);
         Button createProposalBtn = findViewById(R.id.createProposalButton);
+        ImageButton navigationBtn = findViewById(R.id.navigation_btn);
+        LinearLayout navigationLayout = findViewById(R.id.navigation_layout);
 
-        /*
-        viewModel.getProposals().observe(this, proposals -> {
-            if (proposals != null) {
-                List<ProposalListDto> proposalsList = Map(proposals);
-                adapter.setProposals(proposalsList);
+        Button toVotingBtn = findViewById(R.id.to_voting_btn);
+        toVotingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyProposalsActivity.this, ProposalsForVotingActivity.class);
+                startActivity(intent);
             }
         });
-*/
-        proposalList.add(new ProposalListDto("№1: Повысить кворум до 6%", ""));
+
+        Button toBalanceTb = findViewById(R.id.to_balance_btn);
+
+        navigationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigationLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        createProposalBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyProposalsActivity.this, ProposalCreationActivity.class);
+                startActivity(intent);
+            }
+        });
 
         adapter = new ProposalItemsAdapter(proposalList, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        viewModel.getProposals().observe(this, proposals -> {
+            if (proposals != null) {
+                adapter.setProposals(proposals);
+            }
+        });
     }
 
     @Override
     public void onProposalItemClick(int position) {
-        // do on proposal item clock
-    }
-
-    private List<ProposalListDto> Map(List<ProposalThin> thinProposals){
-
-        List<ProposalListDto> proposals = new ArrayList<>();
-
-        for (ProposalThin proposal: thinProposals) {
-            proposals.add(new ProposalListDto(proposal.getName(), "Hello its state"));
-        }
-        for (ProposalThin proposal: thinProposals) {
-            proposals.add(new ProposalListDto(proposal.getName(), "Hello its state"));
-        }
-        for (ProposalThin proposal: thinProposals) {
-            proposals.add(new ProposalListDto(proposal.getName(), "Hello its state"));
-        }
-        for (ProposalThin proposal: thinProposals) {
-            proposals.add(new ProposalListDto(proposal.getName(), "Hello its state"));
-        }
-        for (ProposalThin proposal: thinProposals) {
-            proposals.add(new ProposalListDto(proposal.getName(), "Hello its state"));
-        }
-
-        return proposals;
+        Intent intent = new Intent(MyProposalsActivity.this, ProposalDetailsActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

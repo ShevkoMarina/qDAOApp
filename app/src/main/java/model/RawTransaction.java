@@ -1,12 +1,12 @@
 package model;
 
 public class RawTransaction {
-    private  long nonce;
-    private  long gas;
-    private  long gasLimit;
-    private  String addressTo;
-    private  long value;
-    private  String data;
+    private long nonce;
+    private long gas;
+    private long gasLimit;
+    private String addressTo;
+    private long value;
+    private String data;
 
     public RawTransaction(
             long nonce,

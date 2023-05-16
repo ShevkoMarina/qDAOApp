@@ -1,8 +1,10 @@
 package com.example.qdao.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.security.keystore.KeyProperties;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.qdao.R;
+import com.example.qdao.ui.create_dao.CreateDaoActivity;
+import com.example.qdao.ui.my_proposals.MyProposalsActivity;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.web3j.crypto.CipherException;
@@ -40,7 +44,9 @@ import java.security.Signature;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 
+import remote.user_models.AuthorizeUserResponseDto;
 import service.AccountCreator;
+import service.Result;
 import view_model.AuthorizationViewModel;
 import view_model.MyProposalsViewModel;
 
@@ -48,27 +54,58 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText loginET;
     private EditText passwordET;
+    private AuthorizationViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        AuthorizationViewModel viewModel = new ViewModelProvider(this).get(AuthorizationViewModel.class);
+        viewModel = new ViewModelProvider(this).get(AuthorizationViewModel.class);
+
+        viewModel.GetUserAuthorizationResult().observe(this, new Observer<Result<AuthorizeUserResponseDto>>() {
+            @Override
+            public void onChanged(Result<AuthorizeUserResponseDto> authorizeUserResponseDtoResult) {
+                if (authorizeUserResponseDtoResult.isSuccess()){
+                    // todo
+                }
+                else {
+                    ToastHelper.make(LoginActivity.this, authorizeUserResponseDtoResult.getErrorMessage());
+                }
+            }
+        });
+
+        viewModel.GetUserRegistrationResult().observe(this, new Observer<Result>() {
+            @Override
+            public void onChanged(Result result) {
+                if (result.isSuccess()){
+                    // todo
+                }
+                else {
+                    ToastHelper.make(LoginActivity.this, result.getErrorMessage());
+                }
+            }
+        });
 
         Button createAccountBtn = findViewById(R.id.register_btn);
+        Button loginBtn = findViewById(R.id.login_btn);
         passwordET = findViewById(R.id.password);
         loginET = findViewById(R.id.login);
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.OnLoginBtnClicked(loginET.getText().toString(), passwordET.getText().toString());
+            }
+        });
 
 
         createAccountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.OnCreateAccountBtnClicked();
+                viewModel.OnCreateAccountBtnClicked(loginET.getText().toString(), passwordET.getText().toString());
             }
         });
-
-
 
 /*
         try {
@@ -114,6 +151,11 @@ public class LoginActivity extends AppCompatActivity {
 */
     }
 
+    private void OpenCreateDaoPage(){
+        Intent intent = new Intent(LoginActivity.this, CreateDaoActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
 
 

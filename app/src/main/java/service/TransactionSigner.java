@@ -18,15 +18,12 @@ public class TransactionSigner {
 
     public String SignTransaction(RawTransaction rawTransaction){
         Credentials credentials = Credentials.create("0x93c27fab2f6184bc1c96413a386fb3ff1cc272c818a20d24f9cd520a203a3735");
-
         org.web3j.crypto.RawTransaction tx = ToModel(rawTransaction);
-
         byte[] signedMessage = TransactionEncoder.signMessage(tx, credentials);
 
         // идея пересылать не строку а байты
         return Numeric.toHexString(signedMessage);
     }
-
 
     private  org.web3j.crypto.RawTransaction ToModel(RawTransaction rawTransaction){
         return org.web3j.crypto.RawTransaction.createTransaction(

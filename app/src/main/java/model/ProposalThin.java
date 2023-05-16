@@ -2,10 +2,12 @@ package model;
 
 public class ProposalThin
 {
+    private long id;
     private String name;
     private short state;
 
-    public ProposalThin(String name, short state) {
+    public ProposalThin(long id, String name, short state) {
+        this.id = id;
         this.name = name;
         this.state = state;
     }
@@ -15,5 +17,9 @@ public class ProposalThin
 
     public short getState() {
         return state;
+    }
+
+    public long getId() {
+        return id;
     }
 }

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import remote.NetworkService;
-import remote.ProposalService;
 import remote.TokenService;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -12,7 +11,7 @@ import retrofit2.Response;
 
 public class TokenRepository {
 
-    private TokenService tokenService;
+    private final TokenService tokenService;
 
     public TokenRepository (){
         tokenService = NetworkService.getRetrofitClient().create(TokenService.class);

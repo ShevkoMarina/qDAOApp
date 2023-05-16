@@ -15,47 +15,45 @@
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.proposal_promotion.ProposalPromotionActivity"
+            android:name=".ui.proposal_management.ProposalPromotionDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.BalanceActivity"
-            android:exported="true" >
-
+            android:name=".ui.proposal_management.ProposalManagementActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.voting.ProposalVotingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.BalanceActivity"
+            android:exported="true" />
         <activity
             android:name=".ui.admin.DaoSettingsActivity"
             android:exported="true" />
         <activity
             android:name=".ui.proposals_for_voting.ProposalsForVotingActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ui.create_dao.CreateDaoActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".ui.proposal_creation.ProposalCreationActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".ui.proposal_details.ProposalDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.my_proposals.MyProposalsActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.MainActivity" />
         <activity
             android:name=".ui.LoginActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>

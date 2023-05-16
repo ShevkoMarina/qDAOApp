@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_violet"
+    tools:context=".ui.proposal_management.ProposalPromotionDetailsActivity">
+
+    <TextView
+        android:id="@+id/promotion_proposal_state"
+        style="@style/SubtitleStyle"
+        android:layout_marginTop="48dp"
+        android:gravity="end"
+        android:text="ПРИНЯТО"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.88"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/promotion_proposal_description" />
+
+    <TextView
+        android:id="@+id/promotion_datails_title"
+        style="@style/TitleStyle"
+        android:text="ПРОДВИЖЕНИЕ ПРЕДЛОЖЕНИЯ"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/proposal_promotion_name"
+        style="@style/FieldPresentationStyle"
+        android:layout_marginTop="48dp"
+        android:text="НАЗВАНИЕ"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/promotion_datails_title" />
+
+    <TextView
+        android:id="@+id/promotion_proposal_description"
+        style="@style/FieldPresentationStyle"
+        android:layout_height="120dp"
+        android:layout_marginTop="22dp"
+        android:gravity="start"
+        android:paddingTop="20dp"
+        android:text="ОПИСАНИЕ"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/proposal_promotion_name" />
+
+    <TextView
+        android:id="@+id/promotion_result_of_voting"
+        style="@style/SubtitleStyle"
+        android:layout_marginTop="48dp"
+        android:text="РЕЗУЛЬТАТЫ ГОЛОСОВАНИЯ"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/promotion_proposal_description" />
+
+    <TextView
+        android:id="@+id/promotion_votes_for"
+        style="@style/SubtitleStyle"
+        android:layout_marginTop="135dp"
+        android:layout_marginEnd="60dp"
+        android:text="300"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toStartOf="@+id/promotion_line"
+        app:layout_constraintTop_toBottomOf="@+id/promotion_proposal_description" />
+
+    <TextView
+        android:id="@+id/promotion_line"
+        style="@style/RoundedBtnStyle"
+        android:layout_width="3dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="110dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/promotion_proposal_description"
+        app:layout_constraintVertical_bias="0.026" />
+
+    <TextView
+        android:id="@+id/promotion_votes_against"
+        style="@style/SubtitleStyle"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="135dp"
+        android:text="150"
+        android:textSize="25dp"
+        app:layout_constraintStart_toEndOf="@+id/promotion_line"
+        app:layout_constraintTop_toBottomOf="@+id/promotion_proposal_description" />
+
+    <Button
+        android:id="@+id/promote_btn"
+        style="@style/RoundedBtnStyle"
+        android:text="ПРОДВИНУТЬ"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

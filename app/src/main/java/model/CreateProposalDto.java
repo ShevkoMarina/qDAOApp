@@ -5,15 +5,15 @@ public class CreateProposalDto {
     private final String name;
     private final String description;
     private final int type;
-    private final long userId;
-    private final long newValue;
+    private final int userId;
+    private final int newValue;
 
     public CreateProposalDto(
             String name,
             String description,
             int type,
-            long userId,
-            long newValue) {
+            int userId,
+            int newValue) {
         this.name = name;
         this.description = description;
         this.type = type;
@@ -33,11 +33,11 @@ public class CreateProposalDto {
         return type;
     }
 
-    public long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public long getNewValue() {
+    public int getNewValue() {
         return newValue;
     }
 }
