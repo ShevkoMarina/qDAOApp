@@ -23,7 +23,7 @@ public class ProposalRepository {
     private final ProposalClient proposalClient;
     private final MutableLiveData<Result<RawTransaction>> createProposalTransaction = new MutableLiveData<>();
     private final MutableLiveData<Result<RawTransaction>> voteProposalTransaction = new MutableLiveData<>();
-    private final MutableLiveData<Result<RawTransaction>> queueProposalTransaction = new MutableLiveData<>();
+    private final MutableLiveData<Result<RawTransaction>> promoteProposalTransaction = new MutableLiveData<>();
 
     public MutableLiveData<Result<RawTransaction>> getCreateProposalTransaction() {
         return createProposalTransaction;
@@ -33,8 +33,8 @@ public class ProposalRepository {
         return voteProposalTransaction;
     }
 
-    public MutableLiveData<Result<RawTransaction>> getQueueProposalTransaction() {
-        return queueProposalTransaction;
+    public MutableLiveData<Result<RawTransaction>> getPromoteProposalTransaction() {
+        return promoteProposalTransaction;
     }
 
     public ProposalRepository() {
@@ -193,21 +193,36 @@ public class ProposalRepository {
             @Override
             public void onResponse(Call<RawTransaction> call, Response<RawTransaction> response) {
                 if (response.isSuccessful()) {
-                    queueProposalTransaction.postValue(Result.success(response.body()));
+                    promoteProposalTransaction.postValue(Result.success(response.body()));
                 } else {
-                    queueProposalTransaction.postValue(Result.error("Не удалось получить транзакцию для поставления предложения в очередь"));
+                    promoteProposalTransaction.postValue(Result.error("Не удалось получить транзакцию для поставления предложения в очередь"));
                 }
             }
 
             @Override
             public void onFailure(Call<RawTransaction> call, Throwable t) {
-                queueProposalTransaction.postValue(Result.error("Ошибка подключения к серверу"));
+                promoteProposalTransaction.postValue(Result.error("Ошибка подключения к серверу"));
             }
         });
     }
 
-    public void executeProposal() {
+    public void executeProposal(long proposalId, int userId) {
 
+        proposalClient.executeProposal(proposalId, userId).enqueue(new Callback<RawTransaction>() {
+            @Override
+            public void onResponse(Call<RawTransaction> call, Response<RawTransaction> response) {
+                if (response.isSuccessful()) {
+                    promoteProposalTransaction.postValue(Result.success(response.body()));
+                } else {
+                    promoteProposalTransaction.postValue(Result.error("Не удалось получить транзакцию для выполнения предлоэения"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RawTransaction> call, Throwable t) {
+                promoteProposalTransaction.postValue(Result.error("Ошибка подключения к серверу"));
+            }
+        });
     }
 
     public void cancelProposal() {

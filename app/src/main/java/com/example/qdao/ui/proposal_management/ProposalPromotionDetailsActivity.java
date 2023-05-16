@@ -16,8 +16,6 @@ import model.ProposalInfo;
 import model.RawTransaction;
 import service.Result;
 import view_model.ProposalPromotionDetailsViewModel;
-import view_model.ProposalVotingViewModel;
-import view_model.ProposalsManagementViewModel;
 
 public class ProposalPromotionDetailsActivity extends AppCompatActivity {
 
@@ -26,7 +24,6 @@ public class ProposalPromotionDetailsActivity extends AppCompatActivity {
     private TextView proposalState;
     private TextView proposalVotesAgainst;
     private TextView proposalVotesFor;
-    private Button promotionBtn;
     private ProposalInfo proposalInfo;
 
     @Override
@@ -47,7 +44,7 @@ public class ProposalPromotionDetailsActivity extends AppCompatActivity {
         proposalState = findViewById(R.id.promotion_proposal_state);
         proposalVotesAgainst = findViewById(R.id.promotion_votes_against);
         proposalVotesFor = findViewById(R.id.promotion_votes_for);
-        promotionBtn = findViewById(R.id.promote_btn);
+        Button promotionBtn = findViewById(R.id.promote_btn);
 
         viewModel.getProposalInfo(proposalId).observe(this, proposalInfoResult -> {
             if (proposalInfoResult.isSuccess()) {
@@ -56,7 +53,7 @@ public class ProposalPromotionDetailsActivity extends AppCompatActivity {
             }
         });
 
-        viewModel.getQueueTransactionResult().observe(this, new Observer<Result<RawTransaction>>() {
+        viewModel.getPromotionTransactionResult().observe(this, new Observer<Result<RawTransaction>>() {
             @Override
             public void onChanged(Result<RawTransaction> rawTransactionResult) {
                 if (rawTransactionResult.isSuccess()) {

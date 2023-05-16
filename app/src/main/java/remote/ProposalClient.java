@@ -42,4 +42,8 @@ public interface ProposalClient {
     @Headers("Content-type: application/json")
     @POST("proposal/queue")
     Call<RawTransaction> queueProposal(@Query("proposalId") long proposalId, @Query("userId") int userId);
+
+    @Headers("Content-type: application/json")
+    @POST("proposal/execute")
+    Call<RawTransaction> executeProposal(@Query("proposalId") long proposalId, @Query("userId") int userId);
 }

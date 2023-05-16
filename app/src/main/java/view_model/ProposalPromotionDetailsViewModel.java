@@ -36,12 +36,15 @@ public class ProposalPromotionDetailsViewModel extends AndroidViewModel {
         int userId = 1;
 
         switch (proposalInfo.getStateNumber()){
+            // Success
             case 4: proposalRepository.queueProposal(proposalInfo.getId(), userId);
+            // Queued
+            case 5: proposalRepository.executeProposal(proposalInfo.getId(), userId);
         }
     }
 
-    public LiveData<Result<RawTransaction>> getQueueTransactionResult(){
-        return proposalRepository.getQueueProposalTransaction();
+    public LiveData<Result<RawTransaction>> getPromotionTransactionResult(){
+        return proposalRepository.getPromoteProposalTransaction();
     }
 
     public void sendPromotionTransaction(RawTransaction transaction){
