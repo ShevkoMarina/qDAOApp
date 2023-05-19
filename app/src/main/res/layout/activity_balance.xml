@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_violet"
-    tools:context=".ui.BalanceActivity">
+    tools:context=".ui.token.BalanceActivity">
 
     <TextView
         android:id="@+id/textView24"
@@ -27,23 +27,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/balance_tv"
         style="@style/FieldStyle"
         android:layout_marginTop="40dp"
-        android:text="БАЛАНС: 20"
+        android:text="20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/weight_tv"
         style="@style/FieldStyle"
         android:layout_marginTop="52dp"
-        android:text="ВЕС ГОЛОСОВ: 20"
+        android:text="20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        app:layout_constraintTop_toBottomOf="@+id/balance_tv" />
 
     <TextView
         android:id="@+id/textView17"
@@ -51,10 +51,10 @@
         android:layout_marginTop="104dp"
         android:text="ДЕЛЕГИРОВАТЬ ГОЛОСА"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/weight_tv" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/delegatee_login"
         style="@style/FieldStyle"
         android:layout_marginTop="16dp"
         android:hint="ЛОГИН ПОЛУЧАТЕЛЯ"
@@ -63,7 +63,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/delegate_btn"
         style="@style/RoundedBtnStyle"
         android:text="ДЕЛЕГИРОВАТЬ"
         app:layout_constraintBottom_toBottomOf="parent"

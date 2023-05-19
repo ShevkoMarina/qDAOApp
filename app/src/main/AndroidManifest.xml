@@ -20,17 +20,19 @@
         <activity
             android:name=".ui.proposal_management.ProposalManagementActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".ui.voting.ProposalVotingActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.BalanceActivity"
-            android:exported="true" />
+            android:name=".ui.token.BalanceActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.admin.DaoSettingsActivity"
             android:exported="true" />
