@@ -3,11 +3,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import remote.NetworkService;
 import remote.TransactionClient;
-import remote.user_models.AuthorizeUserResponseDto;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import service.Result;
+import service.utils.Result;
 
 public class TransactionRespoitory {
     private final TransactionClient transactionClient;

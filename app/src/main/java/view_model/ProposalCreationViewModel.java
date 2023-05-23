@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 import model.ProposalType;
 import model.RawTransaction;
 import repository.ProposalRepository;
-import service.Result;
+import service.utils.Result;
 import service.TransactionSender;
 import service.TransactionSigner;
 

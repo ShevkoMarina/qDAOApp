@@ -2,29 +2,22 @@ package service;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.security.KeyPairGeneratorSpec;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
-import android.security.keystore.KeyProtection;
 import android.util.Base64;
 
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.web3j.crypto.Credentials;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Keys;
-import org.web3j.crypto.WalletUtils;
 import org.web3j.utils.Numeric;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
@@ -37,21 +30,12 @@ import java.security.Provider;
 import java.security.PublicKey;
 import java.security.Security;
 import java.security.Signature;
-import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
-import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.interfaces.ECPrivateKey;
 import java.security.spec.ECGenParameterSpec;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import javax.security.auth.x500.X500Principal;
-import javax.security.cert.X509Certificate;
+import service.utils.Result;
 
 /**
  * Creates an account in blockchain for new user
@@ -146,19 +130,28 @@ public class AccountCreator {
          */
     }
 
-    public void generateAndStoreInEcryptedSharedPreferances(Context context) throws
-            InvalidAlgorithmParameterException,
-            NoSuchAlgorithmException,
-            NoSuchProviderException {
+    public Result<String> generateAndStoreInSharedPreferances(Context context) {
 
-        setupBouncyCastle();
-        ECKeyPair ecKeyPair = Keys.createEcKeyPair();
+        try {
+            setupBouncyCastle();
+            ECKeyPair ecKeyPair = Keys.createEcKeyPair();
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("private_key", ecKeyPair.getPrivateKey().toString());
-        editor.putString("public_key", ecKeyPair.getPublicKey().toString());
-        editor.apply();
+            String privateKey =  ecKeyPair.getPrivateKey().toString();
+            String publicKey = ecKeyPair.getPublicKey().toString();
+
+            SharedPreferences sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("private_key", privateKey);
+            editor.putString("public_key", publicKey);
+            editor.apply();
+
+            String userAccount = publicKeyToAddress(publicKey);
+
+            return Result.success(userAccount);
+        }
+        catch (Exception ex){
+            return Result.error("Ошибка генерации аккаунта");
+        }
     }
 
     private void savePrivateKey(BigInteger privateKey, Context context) {

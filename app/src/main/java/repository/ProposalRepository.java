@@ -15,7 +15,7 @@ import remote.ProposalClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import service.Result;
+import service.utils.Result;
 
 
 public class ProposalRepository {

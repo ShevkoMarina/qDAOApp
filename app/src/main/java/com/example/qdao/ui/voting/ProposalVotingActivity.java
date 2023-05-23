@@ -10,10 +10,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.qdao.R;
-import com.example.qdao.ui.ToastHelper;
+import service.utils.ToastHelper;
 
 import model.RawTransaction;
-import service.Result;
+import service.utils.Result;
 import view_model.ProposalVotingViewModel;
 
 public class ProposalVotingActivity extends AppCompatActivity {

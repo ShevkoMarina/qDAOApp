@@ -11,13 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.qdao.R;
-import com.example.qdao.ui.ToastHelper;
-
-import org.w3c.dom.Text;
+import service.utils.ToastHelper;
 
 import model.RawTransaction;
-import service.Result;
-import view_model.ProposalsForVotingVewModel;
+import service.utils.Result;
 import view_model.TokenViewModel;
 
 public class BalanceActivity extends AppCompatActivity {

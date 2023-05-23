@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData;
 import model.RawTransaction;
 import model.TokenInfo;
 import repository.TokenRepository;
-import service.Result;
+import service.utils.Result;
 
 public class TokenViewModel extends AndroidViewModel {
 

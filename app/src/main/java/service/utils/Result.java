@@ -1,9 +1,7 @@
-package service;
+package service.utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.example.qdao.R;
 
 public class Result<T> {
     @Nullable private final T data;

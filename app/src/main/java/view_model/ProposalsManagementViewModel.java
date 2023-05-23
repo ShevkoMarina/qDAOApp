@@ -10,7 +10,7 @@ import java.util.List;
 
 import model.ProposalThin;
 import repository.ProposalRepository;
-import service.Result;
+import service.utils.Result;
 
 public class ProposalsManagementViewModel extends AndroidViewModel {
 

@@ -9,15 +9,14 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.qdao.R;
-import com.example.qdao.ui.ToastHelper;
-import com.example.qdao.ui.my_proposals.ProposalItemsAdapter;
+import service.utils.ToastHelper;
+
 import com.example.qdao.ui.voting.ProposalVotingActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import model.ProposalThin;
-import view_model.MyProposalsViewModel;
 import view_model.ProposalsForVotingVewModel;
 
 public class ProposalsForVotingActivity extends AppCompatActivity implements ProposalsForVotingAdapter.OnProposalListener{

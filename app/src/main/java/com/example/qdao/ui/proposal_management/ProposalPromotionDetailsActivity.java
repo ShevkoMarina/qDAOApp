@@ -10,11 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.qdao.R;
-import com.example.qdao.ui.ToastHelper;
+import service.utils.ToastHelper;
 
 import model.ProposalInfo;
 import model.RawTransaction;
-import service.Result;
+import service.utils.Result;
 import view_model.ProposalPromotionDetailsViewModel;
 
 public class ProposalPromotionDetailsActivity extends AppCompatActivity {

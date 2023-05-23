@@ -12,12 +12,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.qdao.R;
-import com.example.qdao.ui.ToastHelper;
+import service.utils.ToastHelper;
 
 import model.RawTransaction;
-import service.Result;
-import service.TransactionSender;
-import service.TransactionSigner;
+import service.utils.Result;
 import view_model.ProposalCreationViewModel;
 
 public class ProposalCreationActivity extends AppCompatActivity {

@@ -5,11 +5,10 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import model.RawTransaction;
 import repository.AdminRepository;
-import service.Result;
+import service.utils.Result;
 import service.TransactionSender;
 import service.TransactionSigner;
 

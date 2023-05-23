@@ -1,48 +1,46 @@
 package view_model;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import remote.user_models.AuthorizeUserResponseDto;
-import repository.ProposalRepository;
 import repository.UserRepository;
 import service.AccountCreator;
-import service.Result;
+import service.utils.Result;
 
 public class AuthorizationViewModel extends AndroidViewModel {
 
     private final UserRepository userRepository;
+    private final AccountCreator accountCreator;
 
     public AuthorizationViewModel(@NonNull Application application) {
         super(application);
         userRepository = new UserRepository();
+        accountCreator = new AccountCreator();
     }
 
-    public void OnCreateAccountBtnClicked(String login, String password) {
-        AccountCreator accountCreator = new AccountCreator();
-        try {
-           // accountCreator.generateAndStoreInEcryptedSharedPreferances(getApplication());
-            userRepository.register(login, password, "0x000000");
+    public Result<Void> registerUser(String login, String password) {
+        Result<String> accountCreationResult = accountCreator.generateAndStoreInSharedPreferances(getApplication());
+
+        if (!accountCreationResult.isSuccess()) {
+            return Result.error(accountCreationResult.getErrorMessage());
         }
-        catch (Exception ignored) {}
+        userRepository.register(login, password, accountCreationResult.getData());
+        return Result.success();
     }
 
-    public void OnLoginBtnClicked(String login, String password){
+    public void authUser(String login, String password){
         userRepository.authorize(login, password);
     }
 
-    public MutableLiveData<Result<AuthorizeUserResponseDto>> GetUserAuthorizationResult(){
+    public MutableLiveData<Result<AuthorizeUserResponseDto>> getUserAuthResult(){
         return userRepository.getAuthorizeUserResult();
     }
 
-    public MutableLiveData<Result> GetUserRegistrationResult(){
+    public MutableLiveData<Result> getUserRegistrationResult(){
         return userRepository.getRegisterUserResult();
     }
 }
