@@ -50,7 +50,8 @@ public class ProposalItemsAdapter extends RecyclerView.Adapter<ProposalItemsAdap
     private String getStatusName(short state) {
 
         switch (state) {
-            case 0: return "Активно";
+            case 0: return "Создано";
+            case 1: return "Актитвно";
             default: return "Неизвестно";
         }
     }

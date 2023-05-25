@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putInt("user_id", authorizeUserResponseDtoResult.getData().getId());
                     editor.putInt("user_role", authorizeUserResponseDtoResult.getData().getRole());
                     editor.putString("token", authorizeUserResponseDtoResult.getData().getToken());
+                    editor.apply();
 
                     openMyProposalsPage();
                 } else {

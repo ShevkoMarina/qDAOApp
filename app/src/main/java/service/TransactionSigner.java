@@ -16,8 +16,8 @@ public class TransactionSigner {
     private TransactionSigner signer;
     public TransactionSigner(){}
 
-    public String SignTransaction(RawTransaction rawTransaction){
-        Credentials credentials = Credentials.create("0x93c27fab2f6184bc1c96413a386fb3ff1cc272c818a20d24f9cd520a203a3735");
+    public String SignTransaction(RawTransaction rawTransaction, String privateKey){
+        Credentials credentials = Credentials.create(privateKey);
         org.web3j.crypto.RawTransaction tx = ToModel(rawTransaction);
         byte[] signedMessage = TransactionEncoder.signMessage(tx, credentials);
 

@@ -139,13 +139,15 @@ public class AccountCreator {
             String privateKey =  ecKeyPair.getPrivateKey().toString();
             String publicKey = ecKeyPair.getPublicKey().toString();
 
+            privateKey = "0x2c72f5cc094ff6beb9c48e8ce90f2fa894473ee097f715b39d5428e493f46963"; // todo for testing
+
             SharedPreferences sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("private_key", privateKey);
-            editor.putString("public_key", publicKey);
+           // String userAccount = publicKeyToAddress(publicKey);
+            String userAccount = "0x7c11958dbb818fC27f6BA17C4A31C4402a1D480e";
+            editor.putString("account", userAccount);
             editor.apply();
-
-            String userAccount = publicKeyToAddress(publicKey);
 
             return Result.success(userAccount);
         }

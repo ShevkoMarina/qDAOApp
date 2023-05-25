@@ -1,5 +1,12 @@
 package view_model;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.app.Application;
+import android.content.SharedPreferences;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,17 +17,19 @@ import model.ProposalThin;
 import repository.ProposalRepository;
 import repository.TokenRepository;
 
-public class MyProposalsViewModel extends ViewModel {
+public class MyProposalsViewModel extends AndroidViewModel {
     private final ProposalRepository proposalRepository;
     private MutableLiveData<List<ProposalThin>> proposals;
 
 
-    public MyProposalsViewModel() {
+    public MyProposalsViewModel(@NonNull Application application) {
+        super(application);
         proposalRepository = new ProposalRepository();
     }
 
     public LiveData<List<ProposalThin>> getProposals() {
-        long userId = 1L;
+        SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
+        int userId = sp.getInt("user_id", -1);
         if (proposals == null) {
             proposals = new MutableLiveData<>();
             proposals = proposalRepository.getProposals(userId);

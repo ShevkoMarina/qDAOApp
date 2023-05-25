@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/dark_violet">
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/proposalsRecyclerView"
         android:layout_width="350dp"

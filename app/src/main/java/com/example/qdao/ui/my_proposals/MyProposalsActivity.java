@@ -2,23 +2,17 @@ package com.example.qdao.ui.my_proposals;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.lifecycle.ViewModelProvider;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qdao.R;
-import com.example.qdao.ui.admin.DaoSettingsActivity;
 import com.example.qdao.ui.proposal_creation.ProposalCreationActivity;
 import com.example.qdao.ui.proposal_details.ProposalDetailsActivity;
 import com.example.qdao.ui.proposals_for_voting.ProposalsForVotingActivity;
@@ -74,7 +68,6 @@ public class MyProposalsActivity extends AppCompatActivity implements ProposalIt
         adapter = new ProposalItemsAdapter(proposalList, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
         viewModel.getProposals().observe(this, proposals -> {
             if (proposals != null) {

@@ -1,6 +1,9 @@
 package view_model;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.Application;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -44,8 +47,10 @@ public class ProposalVotingViewModel extends AndroidViewModel {
     }
 
     public void signAndSendVoteProposalTransaction(RawTransaction transaction){
+        SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
+        String privateKey = sp.getString( "private_key", "");
 
-        String transactionHex = transactionSigner.SignTransaction(transaction);
+        String transactionHex = transactionSigner.SignTransaction(transaction, privateKey);
         transactionSender.sendSignedTransaction(transactionHex);
     }
 

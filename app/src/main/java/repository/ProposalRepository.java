@@ -41,7 +41,7 @@ public class ProposalRepository {
         proposalClient = NetworkService.getRetrofitClient().create(ProposalClient.class);
     }
 
-    public MutableLiveData<List<ProposalThin>> getProposals(Long userId) {
+    public MutableLiveData<List<ProposalThin>> getProposals(int userId) {
 
         MutableLiveData<List<ProposalThin>> data = new MutableLiveData<>();
 
