@@ -39,7 +39,8 @@ public class ProposalsForVotingActivity extends AppCompatActivity implements Pro
         viewModel.getProposalsActiveForVoting().observe(this, proposalsResult -> {
             if (proposalsResult != null) {
                 if (proposalsResult.isSuccess()) {
-                    adapter.setProposals(proposalsResult.getData());
+                    proposalList = proposalsResult.getData();
+                    adapter.setProposals(proposalList);
                 }
                 else {
                     ToastHelper.make(ProposalsForVotingActivity.this, proposalsResult.getErrorMessage());
@@ -51,6 +52,8 @@ public class ProposalsForVotingActivity extends AppCompatActivity implements Pro
     @Override
     public void onProposalItemClick(int position) {
         Intent intent = new Intent(ProposalsForVotingActivity.this, ProposalVotingActivity.class);
+        long proposalId = proposalList.get(position).getId();
+        intent.putExtra("proposalId", proposalId);
         startActivity(intent);
     }
 }

@@ -64,6 +64,29 @@ public class UserRepository {
         });
     }
 
+    public void initAdmin(String login, String password, String account) {
+
+        AddUserDto request = new AddUserDto(login, password, account);
+
+        userClient.intiAdmin(request).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()){
+                    registerUserResult.postValue(Result.success(null));
+                }
+                else {
+                    registerUserResult.postValue(Result.error("Ошибка регистрации пользователя"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                registerUserResult.postValue(Result.error("Ошибка подключения к серверу"));
+            }
+        });
+    }
+
+
     public MutableLiveData<Result<AuthorizeUserResponseDto>> getAuthorizeUserResult() {
         return authorizeUserResult;
     }

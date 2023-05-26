@@ -16,6 +16,7 @@ import com.example.qdao.R;
 import service.utils.ToastHelper;
 
 import com.example.qdao.ui.my_proposals.MyProposalsActivity;
+import com.example.qdao.ui.proposal_creation.ProposalCreationActivity;
 
 import remote.user_models.AuthorizeUserResponseDto;
 import service.utils.Result;
@@ -34,20 +35,38 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Button createAccountBtn = findViewById(R.id.register_btn);
+        Button loginBtn = findViewById(R.id.login_btn);
+
         viewModel = new ViewModelProvider(this).get(AuthorizationViewModel.class);
 
         viewModel.getUserAuthResult().observe(this, new Observer<Result<AuthorizeUserResponseDto>>() {
             @Override
             public void onChanged(Result<AuthorizeUserResponseDto> authorizeUserResponseDtoResult) {
                 if (authorizeUserResponseDtoResult.isSuccess()) {
-                    sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
-                    editor = sharedPreferences.edit();
-                    editor.putInt("user_id", authorizeUserResponseDtoResult.getData().getId());
-                    editor.putInt("user_role", authorizeUserResponseDtoResult.getData().getRole());
-                    editor.putString("token", authorizeUserResponseDtoResult.getData().getToken());
-                    editor.apply();
+                    if (authorizeUserResponseDtoResult.getData().getRole() == 3 &&
+                            authorizeUserResponseDtoResult.getData().getAccount().equals("")) {
+                        sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+                        editor = sharedPreferences.edit();
+                        editor.putInt("user_id", authorizeUserResponseDtoResult.getData().getId());
+                        editor.putInt("user_role", authorizeUserResponseDtoResult.getData().getRole());
+                        editor.putString("token", authorizeUserResponseDtoResult.getData().getToken());
+                        editor.putBoolean("admin_inited", false);
+                        editor.apply();
 
-                    openMyProposalsPage();
+                        createAccountBtn.setText("Инициализировать админа");
+
+                        ToastHelper.make(LoginActivity.this, "Введите новые логин и пароль для администратора");
+                    }
+                    else {
+                        sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+                        editor = sharedPreferences.edit();
+                        editor.putInt("user_id", authorizeUserResponseDtoResult.getData().getId());
+                        editor.putInt("user_role", authorizeUserResponseDtoResult.getData().getRole());
+                        editor.putString("token", authorizeUserResponseDtoResult.getData().getToken());
+                        editor.apply();
+                        openMyProposalsPage();
+                    }
                 } else {
                     ToastHelper.make(LoginActivity.this, authorizeUserResponseDtoResult.getErrorMessage());
                 }
@@ -65,8 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button createAccountBtn = findViewById(R.id.register_btn);
-        Button loginBtn = findViewById(R.id.login_btn);
+
         passwordET = findViewById(R.id.password);
         loginET = findViewById(R.id.login);
 
@@ -80,6 +98,14 @@ public class LoginActivity extends AppCompatActivity {
         createAccountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+                int role = sharedPreferences.getInt("user_role", -1);
+                if (role == 3 && !sharedPreferences.getBoolean("admin_inited", false)) {
+                    viewModel.initAdmin(loginET.getText().toString(), passwordET.getText().toString());
+                    editor = sharedPreferences.edit();
+                    editor.putBoolean("admin_inited", true);
+                }
+
                 Result<Void> userRegistrationResult = viewModel.registerUser(loginET.getText().toString(), passwordET.getText().toString());
                 if (!userRegistrationResult.isSuccess()) {
                     ToastHelper.make(LoginActivity.this, userRegistrationResult.getErrorMessage());

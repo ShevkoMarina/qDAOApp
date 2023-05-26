@@ -21,7 +21,6 @@ public class TransactionRespoitory {
     }
 
     public void sendTransaction(String transactionHex) {
-
         transactionClient.sendTransaction(transactionHex).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

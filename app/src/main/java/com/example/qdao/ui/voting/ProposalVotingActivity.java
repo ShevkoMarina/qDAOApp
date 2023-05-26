@@ -32,7 +32,12 @@ public class ProposalVotingActivity extends AppCompatActivity {
 
         ProposalVotingViewModel viewModel = new ViewModelProvider(this).get(ProposalVotingViewModel.class);
 
-        long proposalId = 1;
+        long proposalId = 0;
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            proposalId = extras.getLong("proposalId");
+        }
+
         viewModel.getProposalInfo(proposalId).observe(this, proposalsResult -> {
             if (proposalsResult != null) {
                 if (proposalsResult.isSuccess()) {

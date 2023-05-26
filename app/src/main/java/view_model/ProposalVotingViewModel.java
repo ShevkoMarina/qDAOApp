@@ -32,12 +32,14 @@ public class ProposalVotingViewModel extends AndroidViewModel {
     }
 
     public void voteForProposal(long proposalId){
-        int userId = 1;
+        SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
+        int userId = sp.getInt("user_id", -1);
         proposalRepository.voteProposal(proposalId, userId, true);
     }
 
     public void voteAgainstProposal(long proposalId){
-        int userId = 1;
+        SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
+        int userId = sp.getInt("user_id", -1);
 
         proposalRepository.voteProposal(proposalId, userId, false);
     }
@@ -49,6 +51,7 @@ public class ProposalVotingViewModel extends AndroidViewModel {
     public void signAndSendVoteProposalTransaction(RawTransaction transaction){
         SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
         String privateKey = sp.getString( "private_key", "");
+        privateKey = "0x2c72f5cc094ff6beb9c48e8ce90f2fa894473ee097f715b39d5428e493f46963";
 
         String transactionHex = transactionSigner.SignTransaction(transaction, privateKey);
         transactionSender.sendSignedTransaction(transactionHex);

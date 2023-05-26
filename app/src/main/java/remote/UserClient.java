@@ -16,4 +16,8 @@ public interface UserClient {
     @Headers("Content-type: application/json")
     @POST("user/add")
     Call<Void> register(@Body AddUserDto request);
+
+    @Headers("Content-type: application/json")
+    @POST("user/init-admin")
+    Call<Void> intiAdmin(@Body AddUserDto request);
 }

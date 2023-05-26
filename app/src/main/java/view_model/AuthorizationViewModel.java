@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import remote.user_models.AuthorizeUserResponseDto;
@@ -32,7 +33,7 @@ public class AuthorizationViewModel extends AndroidViewModel {
         return Result.success();
     }
 
-    public void authUser(String login, String password){
+    public void authUser(String login, String password) {
         userRepository.authorize(login, password);
     }
 
@@ -42,5 +43,17 @@ public class AuthorizationViewModel extends AndroidViewModel {
 
     public MutableLiveData<Result> getUserRegistrationResult(){
         return userRepository.getRegisterUserResult();
+    }
+
+    public Result<Void> initAdmin(String login, String password){
+
+        Result<String> accountCreationResult = accountCreator.generateAndStoreInSharedPreferances(getApplication());
+
+        if (!accountCreationResult.isSuccess()) {
+            return Result.error(accountCreationResult.getErrorMessage());
+        }
+
+        userRepository.initAdmin(login, password, accountCreationResult.getData());
+        return Result.success();
     }
 }

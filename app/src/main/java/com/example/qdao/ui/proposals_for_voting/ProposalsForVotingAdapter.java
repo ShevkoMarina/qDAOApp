@@ -45,7 +45,7 @@ public class ProposalsForVotingAdapter extends RecyclerView.Adapter<ProposalsFor
     @Override
     public void onBindViewHolder(@NonNull ProposalsForVotingAdapter.ProposalItemViewHolder holder, int i) {
         holder.nameTV.setText(proposals.get(i).getName());
-        holder.stateTV.setText(String.valueOf(proposals.get(i).getState()));
+        holder.stateTV.setText(getStatusName(proposals.get(i).getState()));
     }
 
     @Override
@@ -54,6 +54,15 @@ public class ProposalsForVotingAdapter extends RecyclerView.Adapter<ProposalsFor
             return proposals.size();
         }
         return 0;
+    }
+
+    private String getStatusName(short state) {
+
+        switch (state) {
+            case 0: return "Создано";
+            case 1: return "Актитвно";
+            default: return "Неизвестно";
+        }
     }
 
     public static class ProposalItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
