@@ -8,10 +8,13 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
+
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 
 import model.ProposalType;
 import model.RawTransaction;
+import model.UpdatableSettingsInfo;
+import repository.QDAORepository;
 import repository.ProposalRepository;
 import service.utils.Result;
 import service.TransactionSender;
@@ -19,6 +22,7 @@ import service.TransactionSigner;
 
 public class ProposalCreationViewModel extends AndroidViewModel {
     private final ProposalRepository proposalRepository;
+    private final QDAORepository adminRepository;
     private final TransactionSender transactionSender;
     private final TransactionSigner transactionSigner;
 
@@ -27,8 +31,13 @@ public class ProposalCreationViewModel extends AndroidViewModel {
         super(application);
 
         proposalRepository = new ProposalRepository();
+        adminRepository = new QDAORepository();
         transactionSender = new TransactionSender();
         transactionSigner = new TransactionSigner();
+    }
+
+    public LiveData<Result<UpdatableSettingsInfo>> getUpdatableSettings(){
+        return adminRepository.getUpdatableSettings();
     }
 
 
@@ -57,12 +66,14 @@ public class ProposalCreationViewModel extends AndroidViewModel {
         return transactionSender.getSendTransactionResult();
     }
 
-    private ProposalType Map(String proposalType){
+    public ProposalType Map(String proposalType){
         switch (proposalType){
             case "Изменить период голосования":
                 return ProposalType.UpdateVotingPeriod;
             case "Изменить кворум":
                 return ProposalType.UpdateQuorum;
+            case "Изменить период задержки до голосования":
+                return ProposalType.UpdateVotingDelay;
             default:
                 return ProposalType.Unknown;
         }

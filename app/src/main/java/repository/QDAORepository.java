@@ -1,26 +1,28 @@
 package repository;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import model.RawTransaction;
-import remote.AdminClient;
+import model.UpdatableSettingsInfo;
+import remote.QDAOClient;
 import remote.NetworkService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import service.utils.Result;
 
-public class AdminRepository {
+public class QDAORepository {
 
-    private final AdminClient client;
+    private final QDAOClient client;
     private final MutableLiveData<Result<RawTransaction>> addPrincipalsTransaction = new MutableLiveData<>();
 
     public MutableLiveData<Result<RawTransaction>> getAddPrincipalsTransaction() {
         return addPrincipalsTransaction;
     }
 
-    public AdminRepository(){
-        client = NetworkService.getRetrofitClient().create(AdminClient.class);
+    public QDAORepository(){
+        client = NetworkService.getRetrofitClient().create(QDAOClient.class);
     }
 
     public void addPrincipals(String userLogin, int requiredApprovals, int senderId){
@@ -40,5 +42,27 @@ public class AdminRepository {
                 addPrincipalsTransaction.setValue(Result.error("Ошибка подключения к серверу"));
             }
         });
+    }
+
+    public LiveData<Result<UpdatableSettingsInfo>> getUpdatableSettings(){
+
+        MutableLiveData<Result<UpdatableSettingsInfo>> data = new MutableLiveData<>();
+        client.getUpdatableSettings().enqueue(new Callback<UpdatableSettingsInfo>() {
+            @Override
+            public void onResponse(Call<UpdatableSettingsInfo> call, Response<UpdatableSettingsInfo> response) {
+                if (response.isSuccessful()) {
+                    data.setValue(Result.success(response.body()));
+                } else {
+                    data.setValue(Result.error("Ошибка получения данных по настройкам"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdatableSettingsInfo> call, Throwable t) {
+                data.setValue(Result.error("Ошибка подключения к серверу"));
+            }
+        });
+
+        return data;
     }
 }

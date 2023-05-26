@@ -3,5 +3,6 @@ package model;
 public enum ProposalType {
     Unknown,
     UpdateVotingPeriod,
-    UpdateQuorum
+    UpdateQuorum,
+    UpdateVotingDelay
 }

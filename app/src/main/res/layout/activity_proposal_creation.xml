@@ -65,7 +65,6 @@
         android:background="@drawable/rounded_background_fields"
         android:fontFamily="sans-serif-light"
         android:gravity="center"
-        android:text="5"
         android:textColor="@color/colorAccent"
         android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/createProposalBtn"
