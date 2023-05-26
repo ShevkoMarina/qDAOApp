@@ -20,4 +20,11 @@ public interface QDAOClient {
     @Headers("Content-type: application/json")
     @GET("qdao/updatable-settings")
     Call<UpdatableSettingsInfo> getUpdatableSettings();
+
+    @Headers("Content-type: application/json")
+    @GET("qdao/transfer-tokens")
+    Call<RawTransaction> transferTokens(
+            @Query("userId") int userId,
+            @Query("delefateeLogin") String delefateeLogin,
+            @Query("amount") long amount);
 }

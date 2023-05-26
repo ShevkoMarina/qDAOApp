@@ -16,9 +16,14 @@ public class QDAORepository {
 
     private final QDAOClient client;
     private final MutableLiveData<Result<RawTransaction>> addPrincipalsTransaction = new MutableLiveData<>();
-
     public MutableLiveData<Result<RawTransaction>> getAddPrincipalsTransaction() {
         return addPrincipalsTransaction;
+    }
+
+    private final MutableLiveData<Result<RawTransaction>> transferTokensTransaction = new MutableLiveData<>();
+
+    public MutableLiveData<Result<RawTransaction>> getTransferTokensTransaction() {
+        return transferTokensTransaction;
     }
 
     public QDAORepository(){
@@ -64,5 +69,24 @@ public class QDAORepository {
         });
 
         return data;
+    }
+
+    public void transferTokens(int userId, String delegateeLogin, long amount) {
+
+        client.transferTokens(userId, delegateeLogin, amount).enqueue(new Callback<RawTransaction>() {
+            @Override
+            public void onResponse(Call<RawTransaction> call, Response<RawTransaction> response) {
+                if (response.isSuccessful()) {
+                    transferTokensTransaction.postValue(Result.success(response.body()));
+                } else {
+                    transferTokensTransaction.postValue(Result.error("Ошибка получения данных по настройкам"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RawTransaction> call, Throwable t) {
+                transferTokensTransaction.postValue(Result.error("Ошибка подключения к серверу"));
+            }
+        });
     }
 }

@@ -17,7 +17,7 @@ public class TokenRepository {
     private final TokenClient tokenClient;
     private final MutableLiveData<Result<RawTransaction>> delegateVotesTransactionResult = new MutableLiveData<>();
 
-    public MutableLiveData<Result<RawTransaction>> getDelegateVotesTransactionResult() {
+    public MutableLiveData<Result<RawTransaction>> getDelegateVotesTransaction() {
         return delegateVotesTransactionResult;
     }
 
@@ -48,7 +48,7 @@ public class TokenRepository {
         return data;
     }
 
-    public void delegateVotes(int userId, String delegateeLogin){
+    public void generateDelegateVotesTransaction(int userId, String delegateeLogin){
         tokenClient.delegateVotes(userId, delegateeLogin).enqueue(new Callback<RawTransaction>() {
             @Override
             public void onResponse(Call<RawTransaction> call, Response<RawTransaction> response) {

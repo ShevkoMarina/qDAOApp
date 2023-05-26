@@ -3,11 +3,14 @@ package com.example.qdao.ui.token;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
+import android.view.DragEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.qdao.R;
@@ -30,6 +33,25 @@ public class BalanceActivity extends AppCompatActivity {
         TextView balanceTV = findViewById(R.id.balance_tv);
         TextView weightTV = findViewById(R.id.weight_tv);
         EditText delegateeET = findViewById(R.id.delegatee_login);
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_balance);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                viewModel.getUserTokenInfo().observe(BalanceActivity.this, tokenInfoResult -> {
+                    if (tokenInfoResult != null) {
+                        if (tokenInfoResult.isSuccess()) {
+                            balanceTV.setText(String.valueOf(tokenInfoResult.getData().getBalance()));
+                            weightTV.setText(String.valueOf(tokenInfoResult.getData().getWeight()));
+                        }
+                        else {
+                            ToastHelper.make(BalanceActivity.this, tokenInfoResult.getErrorMessage());
+                        }
+                    }
+                });
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         // Получить баланс и вес голосов пользователя
         viewModel.getUserTokenInfo().observe(this, tokenInfoResult -> {
@@ -48,15 +70,15 @@ public class BalanceActivity extends AppCompatActivity {
         delegateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               viewModel.delegateVotes(delegateeET.getText().toString());
+               viewModel.generateDelegateVotesTransaction(delegateeET.getText().toString());
             }
         });
 
-        viewModel.getDelegateVotesTransactionResult().observe(this, new Observer<Result<RawTransaction>>() {
+        viewModel.getDelegateVotesTransaction().observe(this, new Observer<Result<RawTransaction>>() {
             @Override
             public void onChanged(Result<RawTransaction> rawTransactionResult) {
                 if (rawTransactionResult.isSuccess()) {
-                    // Отправить транзакцию
+                    viewModel.delegateVotes(rawTransactionResult.getData());
                 } else {
                     ToastHelper.make(BalanceActivity.this, rawTransactionResult.getErrorMessage());
                 }

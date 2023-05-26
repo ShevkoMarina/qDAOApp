@@ -14,6 +14,6 @@ public interface TokenClient {
     Call<TokenInfo> getUserTokenInfo(@Query("userId") int userId);
 
     @Headers("Content-type: application/json")
-    @GET("token/user-info")
+    @GET("token/delegate")
     Call<RawTransaction> delegateVotes(@Query("userId") int userId, @Query("delegateeLogin") String delegateeLogin);
 }
