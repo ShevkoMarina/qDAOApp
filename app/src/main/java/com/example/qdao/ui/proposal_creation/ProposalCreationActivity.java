@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.example.qdao.R;
 
 import model.ProposalType;
+import model.UpdatableSettingsInfo;
 import service.utils.ToastHelper;
 
 import model.RawTransaction;
@@ -32,6 +34,8 @@ public class ProposalCreationActivity extends AppCompatActivity {
     private TextView currentValueTV;
     private ProposalCreationViewModel viewModel;
 
+    private UpdatableSettingsInfo updatableSettingsInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,8 @@ public class ProposalCreationActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options);
         proposalActionSpinner.setAdapter(adapter);
+
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         createProposalBtn = findViewById(R.id.createProposalBtn);
@@ -62,22 +68,38 @@ public class ProposalCreationActivity extends AppCompatActivity {
         viewModel.getUpdatableSettings().observe(this, updatableSettingsInfoResult -> {
             if (updatableSettingsInfoResult != null) {
                 if (updatableSettingsInfoResult.isSuccess()){
-                    ProposalType selectedOptionType = viewModel.Map(proposalActionSpinner.getSelectedItem().toString());
-                    if (selectedOptionType == ProposalType.UpdateQuorum) {
-                        currentValueTV.setText(String.valueOf(updatableSettingsInfoResult.getData().getQuorum()));
-                    } else if (selectedOptionType == ProposalType.UpdateVotingDelay) {
-                        currentValueTV.setText(String.valueOf(updatableSettingsInfoResult.getData().getVotingDelay()));
-                    }
-                    else if (selectedOptionType == ProposalType.UpdateVotingPeriod) {
-                        currentValueTV.setText(String.valueOf(updatableSettingsInfoResult.getData().getVotingPeriod()));
-                    }
-                    else {
-                        currentValueTV.setText(String.valueOf(updatableSettingsInfoResult.getData().getVotingPeriod()));
-                        ToastHelper.make(ProposalCreationActivity.this, updatableSettingsInfoResult.getErrorMessage());
-                    }
+                    updatableSettingsInfo = updatableSettingsInfoResult.getData();
+                    currentValueTV.setText(String.valueOf(updatableSettingsInfoResult.getData().getVotingPeriod()));
+                    proposalActionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            switch (position){
+                                case 0: {
+                                    currentValueTV.setText(String.valueOf(updatableSettingsInfo.getVotingPeriod()));
+                                    break;
+                                }
+                                case 1: {
+                                    currentValueTV.setText(String.valueOf(updatableSettingsInfo.getQuorum()));
+                                    break;
+                                }
+                                case 2: {
+                                    currentValueTV.setText(String.valueOf(updatableSettingsInfo.getVotingDelay()));
+                                    break;
+                                }
+                                default: currentValueTV.setText("?");
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
                 }
             }
         });
+
+
 
         viewModel.getProposalTransactionResult().observe(this, new Observer<Result<Void>>() {
             @Override

@@ -18,6 +18,8 @@ import view_model.ProposalVotingViewModel;
 
 public class ProposalVotingActivity extends AppCompatActivity {
 
+    private long proposalId = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +34,6 @@ public class ProposalVotingActivity extends AppCompatActivity {
 
         ProposalVotingViewModel viewModel = new ViewModelProvider(this).get(ProposalVotingViewModel.class);
 
-        long proposalId = 0;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             proposalId = extras.getLong("proposalId");
@@ -76,7 +77,6 @@ public class ProposalVotingActivity extends AppCompatActivity {
         voteForBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int proposalId = 1;
                 viewModel.voteForProposal(proposalId);
             }
         });

@@ -52,6 +52,8 @@ public class ProposalItemsAdapter extends RecyclerView.Adapter<ProposalItemsAdap
         switch (state) {
             case 0: return "Создано";
             case 1: return "Актитвно";
+            case 2: return "Отменено";
+            case 3: return "Отвергнуто";
             default: return "Неизвестно";
         }
     }
