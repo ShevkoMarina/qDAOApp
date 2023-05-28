@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ public class ProposalPromotionDetailsActivity extends AppCompatActivity {
     private TextView proposalVotesAgainst;
     private TextView proposalVotesFor;
     private ProposalInfo proposalInfo;
+    private long proposalId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,6 @@ public class ProposalPromotionDetailsActivity extends AppCompatActivity {
 
         ProposalPromotionDetailsViewModel viewModel = new ViewModelProvider(this).get(ProposalPromotionDetailsViewModel.class);
 
-        long proposalId = 0;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             proposalId = extras.getLong("proposalId");
@@ -45,6 +46,33 @@ public class ProposalPromotionDetailsActivity extends AppCompatActivity {
         proposalVotesAgainst = findViewById(R.id.promotion_votes_against);
         proposalVotesFor = findViewById(R.id.promotion_votes_for);
         Button promotionBtn = findViewById(R.id.promote_btn);
+
+        SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
+        int userRole = sp.getInt("user_role", -1);
+
+        // Если принципал
+        if (userRole == 2) {
+            // Получать только пропозалы в статусе без кворума
+            promotionBtn.setText("СОГЛАСОВАТЬ");
+            promotionBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    viewModel.generateApproveProposalTransaction(proposalId);
+                }
+            });
+        }
+        else {
+            if (proposalInfo.getState().equals("Принято")){
+                promotionBtn.setText("В ОЧЕРЕДЬ");
+            }
+            promotionBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    viewModel.promoteProposal(proposalInfo);
+                }
+            });
+        }
+
 
         viewModel.getProposalInfo(proposalId).observe(this, proposalInfoResult -> {
             if (proposalInfoResult.isSuccess()) {
@@ -64,12 +92,19 @@ public class ProposalPromotionDetailsActivity extends AppCompatActivity {
             }
         });
 
-        promotionBtn.setOnClickListener(new View.OnClickListener() {
+        viewModel.getApproveProposalTransaction().observe(this, new Observer<Result<RawTransaction>>() {
             @Override
-            public void onClick(View v) {
-                viewModel.promoteProposal(proposalInfo);
+            public void onChanged(Result<RawTransaction> rawTransactionResult) {
+                if (rawTransactionResult.isSuccess()){
+                    viewModel.approveProposal(rawTransactionResult.getData());
+                    promotionBtn.setVisibility(View.INVISIBLE);
+                }
+                else {
+                    ToastHelper.make(ProposalPromotionDetailsActivity.this, rawTransactionResult.getErrorMessage());
+                }
             }
         });
+
     }
 
     private void setProposalInfo(ProposalInfo proposalInfo){

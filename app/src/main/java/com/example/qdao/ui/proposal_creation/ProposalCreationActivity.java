@@ -95,6 +95,8 @@ public class ProposalCreationActivity extends AppCompatActivity {
 
                         }
                     });
+                } else {
+                    ToastHelper.make(ProposalCreationActivity.this, updatableSettingsInfoResult.getErrorMessage());
                 }
             }
         });

@@ -2,6 +2,9 @@ package repository;
 
 import androidx.lifecycle.MutableLiveData;
 
+import org.json.JSONObject;
+
+import model.APIError;
 import model.ProposalInfo;
 
 import java.util.List;
@@ -15,6 +18,7 @@ import remote.ProposalClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import service.utils.ErrorUtils;
 import service.utils.Result;
 
 
@@ -24,6 +28,8 @@ public class ProposalRepository {
     private final MutableLiveData<Result<RawTransaction>> createProposalTransaction = new MutableLiveData<>();
     private final MutableLiveData<Result<RawTransaction>> voteProposalTransaction = new MutableLiveData<>();
     private final MutableLiveData<Result<RawTransaction>> promoteProposalTransaction = new MutableLiveData<>();
+    private final MutableLiveData<Result<RawTransaction>> approveProposalTransaction = new MutableLiveData<>();
+
 
     public MutableLiveData<Result<RawTransaction>> getCreateProposalTransaction() {
         return createProposalTransaction;
@@ -35,6 +41,10 @@ public class ProposalRepository {
 
     public MutableLiveData<Result<RawTransaction>> getPromoteProposalTransaction() {
         return promoteProposalTransaction;
+    }
+
+    public MutableLiveData<Result<RawTransaction>> getApproveProposalTransaction() {
+        return approveProposalTransaction;
     }
 
     public ProposalRepository() {
@@ -229,7 +239,24 @@ public class ProposalRepository {
 
     }
 
-    public void approveProposal() {
+    public void approveProposal(long proposalId, int userId){
 
+        proposalClient.approveProposal(proposalId, userId).enqueue(new Callback<RawTransaction>() {
+            @Override
+            public void onResponse(Call<RawTransaction> call, Response<RawTransaction> response) {
+                if (response.isSuccessful()) {
+                    approveProposalTransaction.postValue(Result.success(response.body()));
+                }
+                else {
+                    APIError error = ErrorUtils.parseError(response);
+                    approveProposalTransaction.postValue(Result.error(error.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RawTransaction> call, Throwable t) {
+                approveProposalTransaction.postValue(Result.error("Ошибка подключения к серверу"));
+            }
+        });
     }
 }

@@ -54,12 +54,22 @@ public class DaoSettingsActivity extends AppCompatActivity {
             }
         });
 
-
         viewModel.getTransferTokensTransaction().observe(this, new Observer<Result<RawTransaction>>() {
             @Override
             public void onChanged(Result<RawTransaction> rawTransactionResult) {
                 if (rawTransactionResult.isSuccess()) {
                     viewModel.signAndSendTransferTokensTransaction(rawTransactionResult.getData());
+                } else {
+                    ToastHelper.make(DaoSettingsActivity.this, rawTransactionResult.getErrorMessage());
+                }
+            }
+        });
+
+        viewModel.getAddPrincipalsTransaction().observe(this, new Observer<Result<RawTransaction>>() {
+            @Override
+            public void onChanged(Result<RawTransaction> rawTransactionResult) {
+                if (rawTransactionResult.isSuccess()) {
+                    viewModel.signAndSendAddPrincipalsTransaction(rawTransactionResult.getData());
                 } else {
                     ToastHelper.make(DaoSettingsActivity.this, rawTransactionResult.getErrorMessage());
                 }

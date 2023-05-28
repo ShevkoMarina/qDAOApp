@@ -36,13 +36,16 @@ public class ProposalPromotionDetailsViewModel extends AndroidViewModel {
     }
 
     public void promoteProposal(ProposalInfo proposalInfo){
-        int userId = 1;
+        SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
+        int userId = sp.getInt("user_id", -1);
 
         switch (proposalInfo.getStateNumber()){
-            // Success
-            case 4: proposalRepository.queueProposal(proposalInfo.getId(), userId);
+            // No Quorm
+            // Succeeded
+            case 5: proposalRepository.queueProposal(proposalInfo.getId(), userId);
             // Queued
-            case 5: proposalRepository.executeProposal(proposalInfo.getId(), userId);
+                // Получать eta - если eta еще не прошла то предложение в очердеи, а если прошла то готово к выполнению
+            case 6: proposalRepository.executeProposal(proposalInfo.getId(), userId);
         }
     }
 
@@ -53,6 +56,27 @@ public class ProposalPromotionDetailsViewModel extends AndroidViewModel {
     public void sendPromotionTransaction(RawTransaction transaction) {
         SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
         String privateKey = sp.getString( "private_key", "");
+
+        String transactionHex = transactionSigner.SignTransaction(transaction, privateKey);
+        transactionSender.sendSignedTransaction(transactionHex);
+    }
+
+
+    public void generateApproveProposalTransaction(long proposalId){
+        SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
+        int userId = sp.getInt("user_id", -1);
+
+        proposalRepository.approveProposal(proposalId, userId);
+    }
+
+    public LiveData<Result<RawTransaction>> getApproveProposalTransaction(){
+        return proposalRepository.getApproveProposalTransaction();
+    }
+
+    public void approveProposal(RawTransaction transaction){
+        SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
+        String privateKey = sp.getString( "private_key", "");
+        privateKey = "0x2c72f5cc094ff6beb9c48e8ce90f2fa894473ee097f715b39d5428e493f46963";
 
         String transactionHex = transactionSigner.SignTransaction(transaction, privateKey);
         transactionSender.sendSignedTransaction(transactionHex);

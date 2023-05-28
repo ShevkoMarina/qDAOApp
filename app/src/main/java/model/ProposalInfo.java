@@ -58,13 +58,13 @@ public class ProposalInfo {
 
     public String getState(){
         switch (state){
-            case 0: return "Активно";
-            case 1: return "Отменено";
-            case 2: return "Отвергнуто";
-            case 3: return "Нет кворума";
-            case 4: return "Принято";
-            case 5: return "В очереди";
-            case 6: return "Просрочено";
+            case 0: return "Создано";
+            case 1: return "Актитвно";
+            case 2: return "Отменено";
+            case 3: return "Отвергнуто";
+            case 4: return "Нет кворума";
+            case 5: return "Принято";
+            case 6: return "В очереди";
             case 7: return "Выполнено";
             default: return "Неизвестно";
 
