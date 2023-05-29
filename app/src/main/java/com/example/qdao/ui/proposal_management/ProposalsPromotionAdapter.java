@@ -52,7 +52,8 @@ public class ProposalsPromotionAdapter extends RecyclerView.Adapter<ProposalsPro
         switch (state) {
             case 4: return "Нет кворума";
             case 5: return "Принято";
-            case 6: return "В очереди";
+            case 6: return "В ожидании";
+            case 7: return "В очереди";
             default: return "Неизвестно";
         }
     }

@@ -64,8 +64,9 @@ public class ProposalInfo {
             case 3: return "Отвергнуто";
             case 4: return "Нет кворума";
             case 5: return "Принято";
-            case 6: return "В очереди";
-            case 7: return "Выполнено";
+            case 6: return "В ожидании";
+            case 7: return "В очереди";
+            case 8: return "Выполнено";
             default: return "Неизвестно";
 
         }

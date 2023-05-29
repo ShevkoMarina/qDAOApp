@@ -35,7 +35,7 @@ public class ProposalPromotionDetailsViewModel extends AndroidViewModel {
         return proposalRepository.getProposalInfoById(proposalId);
     }
 
-    public void promoteProposal(ProposalInfo proposalInfo){
+    public void generatePromotionTransaction(ProposalInfo proposalInfo){
         SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
         int userId = sp.getInt("user_id", -1);
 
@@ -44,18 +44,18 @@ public class ProposalPromotionDetailsViewModel extends AndroidViewModel {
             // Succeeded
             case 5: proposalRepository.queueProposal(proposalInfo.getId(), userId);
             // Queued
-                // Получать eta - если eta еще не прошла то предложение в очердеи, а если прошла то готово к выполнению
-            case 6: proposalRepository.executeProposal(proposalInfo.getId(), userId);
+            case 7: proposalRepository.executeProposal(proposalInfo.getId(), userId);
         }
     }
 
-    public LiveData<Result<RawTransaction>> getPromotionTransactionResult() {
+    public LiveData<Result<RawTransaction>> getPromotionTransaction() {
         return proposalRepository.getPromoteProposalTransaction();
     }
 
     public void sendPromotionTransaction(RawTransaction transaction) {
         SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
         String privateKey = sp.getString( "private_key", "");
+        privateKey = "0xe263b4109e1e49e5d7e191c8f64aa9ec456b1768c96f9598d0a531814e252b72";
 
         String transactionHex = transactionSigner.SignTransaction(transaction, privateKey);
         transactionSender.sendSignedTransaction(transactionHex);

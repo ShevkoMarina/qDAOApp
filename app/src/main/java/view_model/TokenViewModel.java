@@ -52,7 +52,7 @@ public class TokenViewModel extends AndroidViewModel {
         SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
         String privateKey = sp.getString( "private_key", "");
 
-        privateKey = "0xa0a4bacaebb95ee12b9695d109481f57c78e1ef4038e645fa3a7d02251370a83"; // user1
+        privateKey = "0x2c72f5cc094ff6beb9c48e8ce90f2fa894473ee097f715b39d5428e493f46963"; // user1
         String transactionHex = transactionSigner.SignTransaction(transaction, privateKey);
         transactionSender.sendSignedTransaction(transactionHex);
     }

@@ -47,41 +47,44 @@ public class ProposalPromotionDetailsActivity extends AppCompatActivity {
         proposalVotesFor = findViewById(R.id.promotion_votes_for);
         Button promotionBtn = findViewById(R.id.promote_btn);
 
-        SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
-        int userRole = sp.getInt("user_role", -1);
-
-        // Если принципал
-        if (userRole == 2) {
-            // Получать только пропозалы в статусе без кворума
-            promotionBtn.setText("СОГЛАСОВАТЬ");
-            promotionBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    viewModel.generateApproveProposalTransaction(proposalId);
-                }
-            });
-        }
-        else {
-            if (proposalInfo.getState().equals("Принято")){
-                promotionBtn.setText("В ОЧЕРЕДЬ");
-            }
-            promotionBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    viewModel.promoteProposal(proposalInfo);
-                }
-            });
-        }
-
 
         viewModel.getProposalInfo(proposalId).observe(this, proposalInfoResult -> {
             if (proposalInfoResult.isSuccess()) {
                 proposalInfo = proposalInfoResult.getData();
                 setProposalInfo(proposalInfo);
+
+                SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
+                int userRole = sp.getInt("user_role", -1);
+
+                // Если принципал
+                if (userRole == 2) {
+                    // Получать только пропозалы в статусе без кворума
+                    promotionBtn.setText("СОГЛАСОВАТЬ");
+                    promotionBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            viewModel.generateApproveProposalTransaction(proposalId);
+                        }
+                    });
+                }
+                else {
+                    if (proposalInfo.getState().equals("Принято")){
+                        promotionBtn.setText("В ОЧЕРЕДЬ");
+                    }
+                    if (proposalInfo.getState().equals("В очереди")){
+                        promotionBtn.setText("ВЫПОЛНИТЬ");
+                    }
+                    promotionBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            viewModel.generatePromotionTransaction(proposalInfo);
+                        }
+                    });
+                }
             }
         });
 
-        viewModel.getPromotionTransactionResult().observe(this, new Observer<Result<RawTransaction>>() {
+        viewModel.getPromotionTransaction().observe(this, new Observer<Result<RawTransaction>>() {
             @Override
             public void onChanged(Result<RawTransaction> rawTransactionResult) {
                 if (rawTransactionResult.isSuccess()) {
