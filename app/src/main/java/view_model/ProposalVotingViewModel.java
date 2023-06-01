@@ -26,8 +26,11 @@ public class ProposalVotingViewModel extends AndroidViewModel {
     public ProposalVotingViewModel(@NonNull Application application) {
         super(application);
 
-        proposalRepository = new ProposalRepository();
-        transactionSender = new TransactionSender();
+        SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
+        String token = sp.getString("user_token", "");
+
+        proposalRepository = new ProposalRepository(token);
+        transactionSender = new TransactionSender(token);
         transactionSigner = new TransactionSigner();
     }
 

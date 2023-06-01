@@ -24,7 +24,11 @@ public class MyProposalsViewModel extends AndroidViewModel {
 
     public MyProposalsViewModel(@NonNull Application application) {
         super(application);
-        proposalRepository = new ProposalRepository();
+
+        SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
+        String token = sp.getString("user_token", "");
+
+        proposalRepository = new ProposalRepository(token);
     }
 
     public LiveData<List<ProposalThin>> getProposals() {

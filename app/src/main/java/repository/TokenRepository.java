@@ -21,8 +21,8 @@ public class TokenRepository {
         return delegateVotesTransactionResult;
     }
 
-    public TokenRepository (){
-        tokenClient = NetworkService.getRetrofitClient().create(TokenClient.class);
+    public TokenRepository (String token){
+        tokenClient = NetworkService.getRetrofitWithToken(token).create(TokenClient.class);
     }
 
     public LiveData<Result<TokenInfo>> getUserTokenInfo(int userId) {

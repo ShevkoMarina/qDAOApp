@@ -46,8 +46,8 @@ public class ProposalRepository {
         return approveProposalTransaction;
     }
 
-    public ProposalRepository() {
-        proposalClient = NetworkService.getRetrofitClient().create(ProposalClient.class);
+    public ProposalRepository(String token) {
+        proposalClient = NetworkService.getRetrofitWithToken(token).create(ProposalClient.class);
     }
 
     public MutableLiveData<List<ProposalThin>> getProposals(int userId) {

@@ -43,8 +43,8 @@ public class QDAORepository {
         return setMigration;
     }
 
-    public QDAORepository(){
-        client = NetworkService.getRetrofitClient().create(QDAOClient.class);
+    public QDAORepository(String token) {
+        client = NetworkService.getRetrofitWithToken(token).create(QDAOClient.class);
     }
 
     public void addPrincipals(String userLogin, int requiredApprovals, int senderId){

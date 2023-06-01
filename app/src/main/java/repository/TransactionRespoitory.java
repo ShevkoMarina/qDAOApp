@@ -16,8 +16,8 @@ public class TransactionRespoitory {
         return sendTransactionResult;
     }
 
-    public TransactionRespoitory (){
-        transactionClient = NetworkService.getRetrofitClient().create(TransactionClient.class);
+    public TransactionRespoitory (String token){
+        transactionClient = NetworkService.getRetrofitWithToken(token).create(TransactionClient.class);
     }
 
     public void sendTransaction(String transactionHex) {

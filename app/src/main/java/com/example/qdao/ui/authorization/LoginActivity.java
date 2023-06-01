@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor = sharedPreferences.edit();
                         editor.putInt("user_id", authorizeUserResponseDtoResult.getData().getId());
                         editor.putInt("user_role", authorizeUserResponseDtoResult.getData().getRole());
-                        editor.putString("token", authorizeUserResponseDtoResult.getData().getToken());
+                        editor.putString("user_token", authorizeUserResponseDtoResult.getData().getToken());
                         editor.putBoolean("admin_inited", false);
                         editor.apply();
 
@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor = sharedPreferences.edit();
                         editor.putInt("user_id", authorizeUserResponseDtoResult.getData().getId());
                         editor.putInt("user_role", authorizeUserResponseDtoResult.getData().getRole());
-                        editor.putString("token", authorizeUserResponseDtoResult.getData().getToken());
+                        editor.putString("user_token", authorizeUserResponseDtoResult.getData().getToken());
                         editor.apply();
                         openMyProposalsPage();
                     }

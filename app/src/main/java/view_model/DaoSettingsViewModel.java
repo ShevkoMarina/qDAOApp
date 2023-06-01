@@ -23,8 +23,11 @@ public class DaoSettingsViewModel extends AndroidViewModel {
     public DaoSettingsViewModel(@NonNull Application application) {
         super(application);
 
-        adminRepository = new QDAORepository();
-        transactionSender = new TransactionSender();
+        SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
+        String token = sp.getString("user_token", "");
+
+        adminRepository = new QDAORepository(token);
+        transactionSender = new TransactionSender(token);
         transactionSigner = new TransactionSigner();
     }
 

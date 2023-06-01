@@ -25,8 +25,11 @@ public class TokenViewModel extends AndroidViewModel {
     public TokenViewModel(@NonNull Application application) {
         super(application);
 
-        tokenRepository = new TokenRepository();
-        transactionSender = new TransactionSender();
+        SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
+        String token = sp.getString("user_token", "");
+
+        tokenRepository = new TokenRepository(token);
+        transactionSender = new TransactionSender(token);
         transactionSigner = new TransactionSigner();
     }
 

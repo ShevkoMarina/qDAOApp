@@ -29,10 +29,12 @@ public class ProposalCreationViewModel extends AndroidViewModel {
 
     public ProposalCreationViewModel(@NonNull Application application){
         super(application);
+        SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
+        String token = sp.getString("user_token", "");
 
-        proposalRepository = new ProposalRepository();
-        adminRepository = new QDAORepository();
-        transactionSender = new TransactionSender();
+        proposalRepository = new ProposalRepository(token);
+        adminRepository = new QDAORepository(token);
+        transactionSender = new TransactionSender(token);
         transactionSigner = new TransactionSigner();
     }
 
