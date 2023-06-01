@@ -13,6 +13,7 @@ import model.RawTransaction;
  */
 public class TransactionSigner {
 
+
     private TransactionSigner signer;
     public TransactionSigner(){}
 

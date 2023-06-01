@@ -102,7 +102,7 @@ public class MyProposalsActivity extends AppCompatActivity implements ProposalIt
                     }
 
                     if (role == 2) {
-                        toBalanceBtn.setText("НАСТРОЙКИ ДАО");
+                        toBalanceBtn.setText("УПРАВЛЕНИЕ ТОКЕНАМИ");
                         toBalanceBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

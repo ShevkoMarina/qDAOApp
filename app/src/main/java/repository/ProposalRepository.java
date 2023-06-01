@@ -30,7 +30,6 @@ public class ProposalRepository {
     private final MutableLiveData<Result<RawTransaction>> promoteProposalTransaction = new MutableLiveData<>();
     private final MutableLiveData<Result<RawTransaction>> approveProposalTransaction = new MutableLiveData<>();
 
-
     public MutableLiveData<Result<RawTransaction>> getCreateProposalTransaction() {
         return createProposalTransaction;
     }
@@ -233,10 +232,6 @@ public class ProposalRepository {
                 promoteProposalTransaction.postValue(Result.error("Ошибка подключения к серверу"));
             }
         });
-    }
-
-    public void cancelProposal() {
-
     }
 
     public void approveProposal(long proposalId, int userId){

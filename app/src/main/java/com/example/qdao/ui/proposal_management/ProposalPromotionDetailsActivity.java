@@ -58,7 +58,7 @@ public class ProposalPromotionDetailsActivity extends AppCompatActivity {
 
                 // Если принципал
                 if (userRole == 2) {
-                    // Получать только пропозалы в статусе без кворума
+
                     promotionBtn.setText("СОГЛАСОВАТЬ");
                     promotionBtn.setOnClickListener(new View.OnClickListener() {
                         @Override

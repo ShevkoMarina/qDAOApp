@@ -76,7 +76,7 @@ public class ProposalPromotionDetailsViewModel extends AndroidViewModel {
     public void approveProposal(RawTransaction transaction){
         SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
         String privateKey = sp.getString( "private_key", "");
-        privateKey = "0x2c72f5cc094ff6beb9c48e8ce90f2fa894473ee097f715b39d5428e493f46963";
+        privateKey = "0x5822bf1c7ede62de46bb07d36720d4ae163acf5063cd1f8bd62287e67b30a3de";
 
         String transactionHex = transactionSigner.SignTransaction(transaction, privateKey);
         transactionSender.sendSignedTransaction(transactionHex);

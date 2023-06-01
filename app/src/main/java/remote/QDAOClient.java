@@ -27,4 +27,21 @@ public interface QDAOClient {
             @Query("userId") int userId,
             @Query("delefateeLogin") String delefateeLogin,
             @Query("amount") long amount);
+
+    @Headers("Content-type: application/json")
+    @GET("qdao/implementation-info")
+    Call<String> getPendingAddress();
+
+    @Headers("Content-type: application/json")
+    @GET("qdao/set-pending")
+    Call<RawTransaction> setPendingAddress(@Query("userId") int userId,
+                                           @Query("address") String address);
+
+    @Headers("Content-type: application/json")
+    @GET("qdao/set-implementation")
+    Call<RawTransaction> setImplementation(@Query("userId") int userId);
+
+    @Headers("Content-type: application/json")
+    @GET("qdao/approve-implementation")
+    Call<RawTransaction> approveImplementation(@Query("userId") int userId);
 }
