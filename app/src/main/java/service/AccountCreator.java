@@ -42,94 +42,6 @@ import service.utils.Result;
  */
 public class AccountCreator {
 
-    private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
-    private static final String KEY_ALIAS = "my_key_alias";
-    private static final String KEY_PASSWORD = "my_key_password";
-
-    public void GenerateNewAccountByMe() throws CertificateException, IOException, NoSuchAlgorithmException, UnrecoverableEntryException, KeyStoreException {
-
-        KeyPairGenerator keyPairGenerator = null;
-        try {
-            keyPairGenerator = KeyPairGenerator.getInstance(
-                    KeyProperties.KEY_ALGORITHM_EC, "AndroidKeyStore");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchProviderException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            keyPairGenerator.initialize(new KeyGenParameterSpec.Builder(
-                    "my_key_alias",
-                    KeyProperties.PURPOSE_SIGN)
-                    .setDigests(KeyProperties.DIGEST_SHA256)
-                    .setAlgorithmParameterSpec(new ECGenParameterSpec("prime256v1"))
-                 //   .setUserAuthenticationRequired(true) прикольно было бы добавить биометрию
-                    .build());
-        } catch (InvalidAlgorithmParameterException e) {
-            throw new RuntimeException(e);
-        }
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-
-        // Get the private key
-        PrivateKey privateKey = keyPair.getPrivate();
-
-        KeyStore keyStore = null;
-        try {
-            keyStore = KeyStore.getInstance("AndroidKeyStore");
-        } catch (KeyStoreException e) {
-            throw new RuntimeException(e);
-        }
-        keyStore.load(null);
-
-        KeyStore.Entry entry = keyStore.getEntry("my_key_alias", null);
-        if (entry instanceof KeyStore.PrivateKeyEntry) {
-            Field field = null;
-            try {
-                field = ECPrivateKey.class.getDeclaredField("s");
-            } catch (NoSuchFieldException e) {
-                throw new RuntimeException(e);
-            }
-            field.setAccessible(true);
-            byte[] privateKeyBytes = new byte[0];
-            try {
-                privateKeyBytes = (byte[]) field.get(privateKey);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-            ECKeyPair ecKeyPair = ECKeyPair.create(privateKeyBytes);
-        } else {
-            throw new KeyStoreException("Unexpected entry type: " + entry.getClass().getName());
-        }
-
-        byte[] message = "Hello, world!".getBytes();
-
-        /*
-        Signature signature = null;
-        try {
-            signature = Signature.getInstance("SHA256withECDSA");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            signature.initSign(privateKey);
-        } catch (InvalidKeyException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            signature.update(message);
-        } catch (SignatureException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            byte[] signatureBytes = signature.sign();
-
-        } catch (SignatureException e) {
-            throw new RuntimeException(e);
-        }
-
-         */
-    }
-
     public Result<String> generateAndStoreInSharedPreferances(Context context) {
 
         try {
@@ -139,13 +51,10 @@ public class AccountCreator {
             String privateKey =  ecKeyPair.getPrivateKey().toString();
             String publicKey = ecKeyPair.getPublicKey().toString();
 
-            privateKey = "0x2c72f5cc094ff6beb9c48e8ce90f2fa894473ee097f715b39d5428e493f46963"; // todo for testing
-
             SharedPreferences sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("private_key", privateKey);
-           // String userAccount = publicKeyToAddress(publicKey);
-            String userAccount = "0x7c11958dbb818fC27f6BA17C4A31C4402a1D480e";
+            String userAccount = publicKeyToAddress(publicKey);
             editor.putString("account", userAccount);
             editor.apply();
 
@@ -154,96 +63,6 @@ public class AccountCreator {
         catch (Exception ex){
             return Result.error("Ошибка генерации аккаунта");
         }
-    }
-
-    private void savePrivateKey(BigInteger privateKey, Context context) {
-        try {
-
-            String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-
-            SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(
-                    "secret_shared_prefs",
-                    masterKeyAlias,
-                    context,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
-
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("private_key", "hello");
-            editor.apply();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private BigInteger getPrivateKey(Context context) {
-        try {
-            SharedPreferences prefs = context.getSharedPreferences("secret_shared_prefs", Context.MODE_PRIVATE);
-            String privateKey = prefs.getString("private_key", "unknown");
-            return new BigInteger(privateKey);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-    public void generateECKeyPairAndStore() throws Exception {
-        // Generate key pair
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("EC");
-        ECGenParameterSpec ecGenParameterSpec = new ECGenParameterSpec("secp256k1");
-      //  ECGenParameterSpec ecGenParameterSpec = new ECGenParameterSpec("prime256v1");
-        keyPairGenerator.initialize(ecGenParameterSpec);
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-
-
-
-        // Store private key in Android Keystore system
-       // KeyStore keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
-      //  keyStore.load(null);
-
-        // Retrieve private key from Android Keystore system
-       // ECPrivateKey privateKey = (ECPrivateKey) keyStore.getKey(KEY_ALIAS, null);
-
-        // Get public key
-        PublicKey publicKey = keyPair.getPublic();
-
-        // Get addresses from public key
-        String address = publicKeyToAddress(Base64.encodeToString(publicKey.getEncoded(), Base64.DEFAULT));
-
-        // Print the generated key pair and address
-       // System.out.println("ECKeyPair: " + keyPair.toString());
-        System.out.println("Address: " + address);
-
-        KeyStore keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
-        keyStore.load(null);
-
-
-
-        //KeyStore.Entry entry = new KeyStore.PrivateKeyEntry(keyPair.getPrivate(), null);
-        keyStore.setEntry(
-                "key2",
-                new KeyStore.PrivateKeyEntry(keyPair.getPrivate(), null),
-                null);
-
-        // Get private key from Android Keystore system
-        PrivateKey privateKey = (PrivateKey) keyStore.getKey(KEY_ALIAS, null);
-
-        /*
-        Credentials credentials = Credentials
-                .create(Numeric.toHexString(privateKey.getEncoded()));
-                *
-         */
-
-        Signature signature = Signature.getInstance("SHA256withECDSA");
-        signature.initSign(privateKey);
-        byte[] data = "Hello, world!".getBytes();
-        signature.update(data);
-        byte[] signatureBytes = signature.sign();
-
-        System.out.println(Numeric.toHexString(signatureBytes));
     }
 
     public static String publicKeyToAddress(String publicKeyString) {
@@ -280,14 +99,6 @@ public class AccountCreator {
         }
 
         return null;
-    }
-
-    private String bytesToHex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
     }
 
     private void setupBouncyCastle() {

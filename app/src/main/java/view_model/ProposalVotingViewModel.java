@@ -54,7 +54,6 @@ public class ProposalVotingViewModel extends AndroidViewModel {
     public void signAndSendVoteProposalTransaction(RawTransaction transaction){
         SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
         String privateKey = sp.getString( "private_key", "");
-        privateKey = "0x3f89bf30c85a93e9640d5ce993f207e3eb4a424f8fe404ecd23b924b062d1078";
 
         String transactionHex = transactionSigner.SignTransaction(transaction, privateKey);
         transactionSender.sendSignedTransaction(transactionHex);

@@ -60,7 +60,6 @@ public class ProposalsManagementViewModel extends AndroidViewModel {
     public void signAndSendPendingMigrationTransaction(RawTransaction transaction) {
         SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
         String privateKey = sp.getString( "private_key", "");
-        privateKey = "0xe263b4109e1e49e5d7e191c8f64aa9ec456b1768c96f9598d0a531814e252b72";
 
         String transactionHex = transactionSigner.SignTransaction(transaction, privateKey);
         transactionSender.sendSignedTransaction(transactionHex);
@@ -80,7 +79,6 @@ public class ProposalsManagementViewModel extends AndroidViewModel {
     public void signAndSendApproveMigrationTransaction(RawTransaction transaction) {
         SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
         String privateKey = sp.getString( "private_key", "");
-        privateKey = "0x5822bf1c7ede62de46bb07d36720d4ae163acf5063cd1f8bd62287e67b30a3de";
 
         String transactionHex = transactionSigner.SignTransaction(transaction, privateKey);
         transactionSender.sendSignedTransaction(transactionHex);
@@ -101,7 +99,6 @@ public class ProposalsManagementViewModel extends AndroidViewModel {
     public void signAndSendSetMigrationTransaction(RawTransaction transaction) {
         SharedPreferences sp = getApplication().getSharedPreferences("UserData", MODE_PRIVATE);
         String privateKey = sp.getString( "private_key", "");
-        privateKey = "0xe263b4109e1e49e5d7e191c8f64aa9ec456b1768c96f9598d0a531814e252b72";
 
         String transactionHex = transactionSigner.SignTransaction(transaction, privateKey);
         transactionSender.sendSignedTransaction(transactionHex);

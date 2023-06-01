@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.qdao.R;
 import com.example.qdao.ui.admin.DaoSettingsActivity;
 import com.example.qdao.ui.proposal_creation.ProposalCreationActivity;
-import com.example.qdao.ui.proposal_details.ProposalDetailsActivity;
 import com.example.qdao.ui.proposal_management.ProposalManagementActivity;
 import com.example.qdao.ui.proposals_for_voting.ProposalsForVotingActivity;
 import com.example.qdao.ui.token.BalanceActivity;
@@ -138,8 +137,6 @@ public class MyProposalsActivity extends AppCompatActivity implements ProposalIt
 
     @Override
     public void onProposalItemClick(int position) {
-        Intent intent = new Intent(MyProposalsActivity.this, ProposalDetailsActivity.class);
-        startActivity(intent);
-        finish();
+
     }
 }
